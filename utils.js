@@ -62,7 +62,8 @@ export function setActiveLink(topnav, activeUrl) {
  */
 export async function handleHttpErrors(res) {
   if (!res.ok) {
-    const errorResponse = await res.json();
+    
+    const errorResponse = await res.json()
     const error = new Error(errorResponse.message)
     error.apiError = errorResponse
     throw error
@@ -98,4 +99,12 @@ export function encode(str) {
   str = str.replace(/"/g, "&quot;");
   str = str.replace(/'/g, "&#039;");
   return str;
+}
+
+export function setResponseText(succes, message){
+  document.getElementById("response-text").style.color = succes ? "darkgreen" : "red"
+  document.getElementById("response-text").innerText = message
+  if(succes){
+    document.getElementById("response-text").innerText = 'succes'
+  }
 }

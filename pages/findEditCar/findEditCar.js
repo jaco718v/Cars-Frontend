@@ -1,4 +1,5 @@
 import { API_URL} from "../../settings.js"
+import { handleHttpErrors, setResponseText } from "../../utils.js"
 
 const URL = `${API_URL}/cars`
 
@@ -24,10 +25,14 @@ async function updateCar(URL){
     const price = document.getElementById("price-pr-day").value
     const discount = document.getElementById("best-discount").value
     
+    const token = localStorage.getItem("token")
+
+    try{
     const response = await fetch(URL, {
         method:'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization":"Bearer "+ token
         },
         body: JSON.stringify({
             brand: brand,
@@ -35,19 +40,29 @@ async function updateCar(URL){
             pricePrDay: price,
             bestDiscount: discount
         })
-    }).then(res => res.json())
-    console.log(response)
+    }).then(handleHttpErrors)
+    setResponseText(true)
+    }catch(err){
+        setResponseText(false, err.message)
+    }
 }
 
 async function getCarById(URL){
-    const carData = await fetch(URL)
-    .then(res => res.json())
+    const token = localStorage.getItem("token")
+    
+    try{
+    const carData = await fetch(URL, {
+        headers:{ "Authorization":"Bearer "+ token}
+    })
+    .then(handleHttpErrors)
     document.getElementById("car-id").value = carData.id
     document.getElementById("brand").value = carData.brand
     document.getElementById("model").value = carData.model
     document.getElementById("price-pr-day").value = carData.pricePrDay
     document.getElementById("best-discount").value = carData.bestDiscount
-    console.log(carData.discount)
+    } catch(err){
+        setResponseText(false, err.message)
+    }
 }
 
 async function deleteCar(URL){

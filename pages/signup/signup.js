@@ -1,4 +1,5 @@
 import { API_URL} from "../../settings.js"
+import { handleHttpErrors, setResponseText } from "../../utils.js"
 
 
 const URL = API_URL + "/members"
@@ -21,7 +22,7 @@ async function signUpUser(){
     const city = document.getElementById("input-city").value
     const zip = document.getElementById("input-zip").value
     
-
+    try{
     const response = await fetch(URL, {
         method:'POST',
         headers: {
@@ -38,8 +39,11 @@ async function signUpUser(){
             zip: zip
         })
     })
-    .then(data => data.json())
-    console.log(response)
+    .then(handleHttpErrors)
+    window.router.navigate("login")
+    }catch(err){
+        setResponseText(false, err.message)
+    }
 }
 
 

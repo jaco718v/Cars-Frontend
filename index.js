@@ -11,9 +11,16 @@ import { initMembers } from "./pages/members/members.js"
 import { initCars } from "./pages/cars/cars.js"
 import { initAddCar } from "./pages/addCar/addCar.js"
 import { initLogin } from "./pages/login/login.js"
+import { initLogout } from "./pages/logout/logout.js"
 import { initSignup } from "./pages/signup/signup.js"
 import { initFindEditCar } from "./pages/findEditCar/findEditCar.js"
 import { initListReservationsAll } from "./pages/showReservations/reservations.js"
+import { toggleLoginStatus } from "./pages/login/login.js"
+
+const token = localStorage.getItem("token")
+const roles = localStorage.getItem("roles")
+//If token existed, for example after a refresh, set UI accordingly
+toggleLoginStatus(token,roles)
 
 window.addEventListener("load", async () => {
 
@@ -22,6 +29,7 @@ window.addEventListener("load", async () => {
   const templateAddCar = await loadHtml("./pages/addCar/addCar.html")
   const templateSignup = await loadHtml("./pages/signup/signup.html")
   const templateLogin = await loadHtml("./pages/login/login.html")
+  const templateLogout = await loadHtml("./pages/logout/logout.html")
   const templateFindEditCar = await loadHtml("./pages/findEditCar/findEditCar.html")
   const templateReserve = await loadHtml("./pages/reservation/reserve.html")
   const templateReservations = await loadHtml("./pages/showReservations/reservations.html")
@@ -75,9 +83,13 @@ window.addEventListener("load", async () => {
         renderTemplate(templateSignup, "content")
         initSignup()
       },
-      "/login": (match) => {
+      "/login": () => {
         renderTemplate(templateLogin, "content")
         initLogin()
+      },
+      "/logout": () => {
+        renderTemplate(templateLogout, "content")
+        initLogout()
       }
     })
     .notFound(() => {

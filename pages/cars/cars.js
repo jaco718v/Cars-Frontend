@@ -1,5 +1,6 @@
 import { API_URL } from "../../settings.js"
 import { sanitizeStringWithTableRows } from "../../utils.js"
+import { handleHttpErrors } from "../../utils.js"
 const URL = API_URL + "/cars"
 
 export function initCars() {
@@ -24,7 +25,15 @@ function makeTable(cars){
 
 
 async function getAllCars(evt){
-    const allCars = await fetch(URL)
-    .then(res => res.json())
-    makeTable(allCars)
+    const token = localStorage.getItem("token")
+    
+    try{
+    const allCars = await fetch(URL, {
+        headers: {"Authorization":"Bearer "+token}
+    })
+    .then(handleHttpErrors)
+    makeTable(allCars)}
+    catch(err){
+        console.log(false, err.message)
+    }
 }

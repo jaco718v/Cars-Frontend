@@ -28,7 +28,7 @@
           <li class="nav-item active">
             <a class="nav-link" href="/" data-navigo>Home</a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" id="nav-cars">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               Cars (A)
@@ -42,15 +42,15 @@
               <li><a class="dropdown-item" href="/cars" data-navigo>All Cars</a></li>
             </ul>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="nav-members">
             <a class="nav-link" href="/members" data-navigo>Members(A)</a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" id="nav-signup">
             <a class="nav-link" href="/signup" data-navigo>Sign up</a>
           </li>
 
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" id="nav-reservation">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               Reservation (M)
@@ -61,14 +61,19 @@
             </ul>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" id="nav-login">
             <a class="nav-link" href="/login" data-navigo>Login</a>
           </li>
+          <li class="nav-item" id="nav-logout">
+            <a class="nav-link" href="/logout" data-navigo>Logout</a>
+          </li>
+
         </ul>
       </div>
     </div>
   </nav>
 
+  <div id="user-details"></div>
   <div id="content" style="margin:5%;margin-top:3%;"></div>
   </div>
 

@@ -1,5 +1,5 @@
 <div class="template">
-  <h2>Reserve Car "Not functional yet"</h2>
+  <h2>Reserve Car</h2>
   <table class="table" style="max-width:1000px;">
     <thead>
       <tr>
@@ -28,22 +28,33 @@
         </div>
         <div class="modal-body">
           <div>
-            <p style="font-style: italic;">With security enabled, and if this requires a user to be logged in,
-              username is not nessecary, since the server will know who the currently logged in user is </p>
+            <p style="font-style: italic;">Enter dates for reservation </p>
             <div class="row">
               <div class="col-md-3">
-                <label for="user-name">User name</label>
+                <p for="modal-username-display">Username:</p>
               </div>
-              <div class="col-md-9">
-                <input id="user-name" placeholder="Enter your user name">
+              <span class="col-md-9">
+                <p id="modal-username-display"></p>
+              </span>
+              <div class="col-md-3">
+                <p for="modal-carid-display">CarId:</p>
               </div>
+              <span class="col-md-9">
+                <p id="modal-carid-display"></p>
+              </span>
             </div>
             <div class="row">
               <div class="col-md-3">
-                <label for="reservation-date">Date</label>
+                <label for="reservation-date">Date from</label>
               </div>
               <div class="col-md-9">
-                <input id="reservation-date" type="date" placeholder="Select a reservation date">
+                <input id="reservation-date-start" type="date" placeholder="Select when to reserve from">
+              </div>
+              <div class="col-md-3">
+                <label for="reservation-date">Date to</label>
+              </div>
+              <div class="col-md-9">
+                <input id="reservation-date-end" type="date" placeholder="Select end reservation date">
               </div>
             </div>
             <input hidden id="car-id" />
@@ -54,6 +65,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button id="btn-reservation" type="button" class="btn btn-primary">Make Reservation</button>
+          <div id="response-text"></div>
         </div>
       </div>
     </div>

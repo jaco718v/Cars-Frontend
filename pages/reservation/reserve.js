@@ -1,11 +1,13 @@
 
 import { API_URL } from "../../settings.js"
-import { sanitizeStringWithTableRows } from "../../utils.js"
-const URL = API_URL + "/cars"
+import { handleHttpErrors, sanitizeStringWithTableRows, setResponseText } from "../../utils.js"
+const carURL = API_URL + "/cars"
+const resURL = API_URL + "/reservations"
 
 export async function initReservation() {
-    document.getElementById("table-rows").onclick = evt => showReservation()
     getAllCars()
+    document.getElementById("table-rows").onclick = evt => showReservation(evt)
+    document.getElementById("btn-reservation").onclick = evt => makeReservation()
 
 }
 
@@ -21,7 +23,6 @@ function makeTable(cars){
             <td>${car.pricePrDay}</td>
             <td>
             <button id="row-btn_reserve_${car.id}" type="button"  class="btn btn-sm btn-primary"  data-bs-toggle="modal" data-bs-target="#reservation-modal" >Reserve</button> 
-            <button id="row-btn_delete_${car.id}" type="button"  class="btn btn-sm btn-danger">Delete</button>
             </td>
         </tr>
         `)
@@ -31,26 +32,56 @@ function makeTable(cars){
 
 
 async function getAllCars(evt){
-    const allCars = await fetch(URL)
-    .then(res => res.json())
+    const token = localStorage.getItem("token")
+    
+    try{
+    const allCars = await fetch(carURL,{
+        headers:{ "Authorization":"Bearer "+ token}
+    })
+    .then(handleHttpErrors)
     makeTable(allCars)
+    }catch(err){
+        console.log(err.message)
+    }
 }
 
-async function showReservation(evt){
+async function makeReservation(evt){
+    const rentalDate = document.getElementById("reservation-date-start").value
+    const rentalDateEnd = document.getElementById("reservation-date-end").value
+    const username = localStorage.getItem("user")
+    const carId = document.getElementById("modal-carid-display").innerText
+    
+    const token = localStorage.getItem("token")
+
+    try{
+    const response = await fetch(resURL+"/"+username, {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            "Authorization":"Bearer "+ token
+        },
+        body: JSON.stringify({
+            rentalDate,rentalDateEnd,carId})
+    }).then(handleHttpErrors)
+    setResponseText(true)
+    }catch(err){
+        setResponseText(false,err.message)
+    }
+}
+
+ async function showReservation(evt){
     const target = evt.target
     if (!target.id.startsWith("row-btn_")) {
         return
       }
-      
       const parts = target.id.split("_");
       const id = parts[2]
       const btnAction = parts[1]
       if(btnAction === "reserve"){
-        
+        document.getElementById("modal-username-display").innerText = localStorage.getItem("user")
+        document.getElementById("modal-carid-display").innerText = id
       }
+} 
 
-      if(btnAction === "delete"){
 
-      }
-}
 

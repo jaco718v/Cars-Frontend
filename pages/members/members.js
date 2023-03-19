@@ -1,5 +1,5 @@
 import { API_URL } from "../../settings.js"
-import { sanitizeStringWithTableRows } from "../../utils.js"
+import { handleHttpErrors, sanitizeStringWithTableRows } from "../../utils.js"
 const URL = API_URL + "/members"
 
 export function initMembers(){
@@ -20,7 +20,14 @@ function makeTable(members){
 }
 
 async function getAllMembers(){
-    const allMembers = await fetch(URL)
-    .then(res => res.json())
+    const token = localStorage.getItem("token")
+    try{
+    const allMembers = await fetch(URL,{
+        headers:{ "Authorization":"Bearer "+ token}
+    })
+    .then(handleHttpErrors)
     makeTable(allMembers)
+    }catch(err){
+        console.log(err.message)
+    }
 }
